@@ -1,6 +1,7 @@
 from playwright.async_api import async_playwright
 from playwright_stealth import stealth_async
 from fastapi import FastAPI, HTTPException
+import time
 
 app = FastAPI()
 
@@ -25,9 +26,9 @@ async def assess(property_id: str):
         app.playwright = await async_playwright().start()
 
     if not app.browser or not app.browser.is_connected:
-        app.browser = await app.playwright.chromium.launch()
+        app.browser = await app.playwright.chromium.launch(headless=False)
 
-    assessment_url = f"https://www.bcassessment.ca/Property/Info/${property_id}"
+    assessment_url = f"https://www.bcassessment.ca//Property/Info/${property_id}"
     captcha_url = "https://www.bcassessment.ca/Property/UsageValidation"
 
     page = await app.browser.new_page()

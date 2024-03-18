@@ -4,7 +4,6 @@ from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
-app.playwright = async_playwright()
 app.is_started = False
 app.browser = None
 
@@ -23,7 +22,7 @@ def health_check():
 async def assess(property_id: str):
     if not app.is_started:
         app.is_started = True
-        await app.playwright.start()
+        app.playwright = await async_playwright().start()
 
     if not app.browser or not app.browser.is_connected:
         app.browser = await app.playwright.chromium.launch()

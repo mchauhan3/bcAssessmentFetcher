@@ -1,4 +1,4 @@
-FROM python:alpine3.19
+FROM python:3
 
 WORKDIR /app
 
@@ -15,6 +15,7 @@ RUN pip install --upgrade pip
 # Install dependencies
 COPY requirements.txt .
 RUN pip install --user --no-cache-dir --upgrade -r requirements.txt
+RUN playwright install chromium
 
 # Copy the app
 COPY main.py /app/main.py

@@ -27,12 +27,12 @@ async def assess(property_id: str):
     if not app.browser or not app.browser.is_connected:
         app.browser = await app.playwright.chromium.launch()
 
-    assessment_url = f"https://www.bcassessment.ca//Property/Info/${property_id}"
+    assessment_url = f"https://www.bcassessment.ca//Property/Info/{property_id}"
     captcha_url = "https://www.bcassessment.ca/Property/UsageValidation"
 
     page = await app.browser.new_page()
     await stealth_async(page)
-    await page.goto(assessment_url)
+    await page.goto(assessment_url, referer="strict-origin-when-cross-origin")
 
     def handle_captcha(frame):
         if frame.url == captcha_url:
